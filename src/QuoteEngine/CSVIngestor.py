@@ -1,3 +1,4 @@
+"""Module for ingesting CSV files."""
 import csv
 
 from IngestorInterface import IngestorInterface
@@ -5,11 +6,13 @@ from QuoteModel import QuoteModel
 
 
 class CSVIngestor(IngestorInterface):
+    """Class for ingesting CSV files."""
 
     allowed_extensions = ["csv"]
 
     @classmethod
     def parse(cls, path="../_data/DogQuotes/DogQuotesCSV.csv"):
+        """Parse quote file."""
         if not cls.can_ingest(path):
             raise Exception('cannot ingest this file type')
         quotes = []

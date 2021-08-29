@@ -1,13 +1,16 @@
+"""Module for ingesting TXT files."""
 from IngestorInterface import IngestorInterface
 from QuoteModel import QuoteModel
 
 
-class TXTIngestor(IngestorInterface):
+class TextIngestor(IngestorInterface):
+    """Class for ingesting TXT files."""
 
     allowed_extensions = ["txt"]
 
     @classmethod
     def parse(cls, path="../_data/DogQuotes/DogQuotesTXT.txt"):
+        """Parse quote file."""
         if not cls.can_ingest(path):
             raise Exception('cannot ingest this file type')
         quotes = []

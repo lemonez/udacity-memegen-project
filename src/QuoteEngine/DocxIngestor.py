@@ -1,3 +1,4 @@
+"""Module for ingesting DOCX files."""
 import docx
 
 from IngestorInterface import IngestorInterface
@@ -5,11 +6,13 @@ from QuoteModel import QuoteModel
 
 
 class DocxIngestor(IngestorInterface):
+    """Class for ingesting DOCX files."""
 
     allowed_extensions = ["docx"]
 
     @classmethod
     def parse(cls, path="../_data/DogQuotes/DogQuotesDOCX.docx"):
+        """Parse quote file."""
         if not cls.can_ingest(path):
             raise Exception('cannot ingest this file type')
         quotes = []

@@ -1,0 +1,1 @@
+"""Turn QuoteEngine into a package."""
