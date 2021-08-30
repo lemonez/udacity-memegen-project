@@ -1,6 +1,6 @@
 """Module for ingesting TXT files."""
-from IngestorInterface import IngestorInterface
-from QuoteModel import QuoteModel
+from .IngestorInterface import IngestorInterface
+from .QuoteModel import QuoteModel
 
 
 class TextIngestor(IngestorInterface):

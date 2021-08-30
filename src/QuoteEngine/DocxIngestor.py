@@ -1,8 +1,8 @@
 """Module for ingesting DOCX files."""
 import docx
 
-from IngestorInterface import IngestorInterface
-from QuoteModel import QuoteModel
+from .IngestorInterface import IngestorInterface
+from .QuoteModel import QuoteModel
 
 
 class DocxIngestor(IngestorInterface):

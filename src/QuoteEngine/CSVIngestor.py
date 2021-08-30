@@ -1,8 +1,9 @@
 """Module for ingesting CSV files."""
 import csv
+# TODO: Must I used pandas? I'd think that using vanilla Python would be preferable since it's harder.
 
-from IngestorInterface import IngestorInterface
-from QuoteModel import QuoteModel
+from .IngestorInterface import IngestorInterface
+from .QuoteModel import QuoteModel
 
 
 class CSVIngestor(IngestorInterface):
