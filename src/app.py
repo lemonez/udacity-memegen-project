@@ -51,14 +51,18 @@ def meme_form():
 
 @app.route('/create', methods=['POST'])
 def meme_post():
-    """ Create a user defined meme """
+    """Create a user defined meme.
+
+    If an image URL isn't specified, or if a quote or author isn't specified,
+    a random stock image and/or quote is used.
+    """
 
     # 1. Use requests to save the image from the image_url
     #    form param to a temp local file.
-    # print(request)
+    using_stock_image = False
     img_url = request.form.get("image_url")
-    print('***'+img_url)
     if img_url in [None, ""]:
+        using_stock_image = True
         img = random.choice(imgs)
         print("Using stock image")
     else:
@@ -79,8 +83,8 @@ def meme_post():
 
     path = meme.make_meme(img, body, author)
 
-    # 3. Remove the temporary saved image.
-    if img_url not in [None, ""]:
+    # # 3. Remove the temporary saved image.
+    if not using_stock_image:
         os.remove(img)
 
     return render_template('meme.html', path=path)
