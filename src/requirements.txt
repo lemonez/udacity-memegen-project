@@ -1,6 +1,0 @@
-requests==2.25.1
-Pillow @ file:///opt/concourse/worker/volumes/live/991b9a87-3372-4acd-45f9-eaa52701f03c/volume/pillow_1603822262543/work
-Flask==1.1.2
-Flask==1.1.2
-Pillow @ file:///opt/concourse/worker/volumes/live/991b9a87-3372-4acd-45f9-eaa52701f03c/volume/pillow_1603822262543/work
-requests==2.25.1
