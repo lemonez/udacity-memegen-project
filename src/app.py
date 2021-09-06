@@ -36,7 +36,7 @@ print(len(imgs))
 
 @app.route('/')
 def meme_rand():
-    """ Generate a random meme """
+    """Generate a random meme."""
     img = random.choice((imgs))
     quote = random.choice(quotes)
     path = meme.make_meme(img, quote.body, quote.author)
@@ -45,7 +45,7 @@ def meme_rand():
 
 @app.route('/create', methods=['GET'])
 def meme_form():
-    """ User input for meme information """
+    """Take user input for meme information """
     return render_template('meme_form.html')
 
 
