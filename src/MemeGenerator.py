@@ -1,3 +1,5 @@
+"""Module for generating memes, with MemeEngine class."""
+
 import math
 import os
 import time
@@ -9,13 +11,15 @@ class MemeEngine:
     """Class to hold meme-generation functionality."""
 
     def __init__(self, outdir):
+        """Construct MemeEngine instance method."""
         self.outdir = outdir
         if not os.path.isdir(outdir):
             os.mkdir(outdir)
 
     def make_meme(self, img_path, text, author, width=500) -> str:
+        """Create a meme."""
         ext = img_path.split('.')[-1]
-        out_path = self.outdir + "/" + self.get_unique_filename() + '.' + ext
+        out_path = self.outdir + "/" + self.create_unique_filename() + '.' + ext
         with Image.open(img_path) as img:
             actual_width = img.size[0]
             if actual_width > width:
@@ -26,6 +30,7 @@ class MemeEngine:
 
     @staticmethod
     def resize_image(img, actual_width, width):
+        """Resize an image."""
         # `img.size` is `(width, height)` tuple
         ratio = width/float(actual_width)
         height = int(ratio * float(img.size[1]))
@@ -34,12 +39,13 @@ class MemeEngine:
 
     @staticmethod
     def add_image_quote(img, text: str, author: str) -> None:
-        """Add quote to image."""
+        """Add quote to an image."""
         message = f'"{text}" - {author}'
         draw = ImageDraw.Draw(img)
         font = ImageFont.truetype('./fonts/LilitaOne-Regular.ttf', size=20)
-        draw.text((10, 30), message, font=font, fill='white')
+        draw.text((10, 30), message, font=font, fill='purple')
 
     @staticmethod
-    def get_unique_filename():
+    def create_unique_filename():
+        """Create a unique temp filename for the meme."""
         return str(math.trunc(round(time.time(), 4) * 1000))

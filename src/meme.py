@@ -1,3 +1,5 @@
+"""Module to parse meme args and generate meme."""
+
 import argparse
 import os
 import random
@@ -14,7 +16,7 @@ def generate_meme(path=None, body=None, author=None):
     if path is None:
         images = "./_data/photos/dog/"
         imgs = []
-        for root, dirs, files in os.walk(images):
+        for root, _, files in os.walk(images):
             imgs = [os.path.join(root, name) for name in files]
 
         img = random.choice(imgs)

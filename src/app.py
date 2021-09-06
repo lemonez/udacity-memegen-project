@@ -3,7 +3,8 @@ import os
 import requests
 from flask import Flask, render_template, abort, request
 
-# @TODO Import your Ingestor and MemeEngine classes
+from MemeGenerator import MemeEngine
+from QuoteEngine.Ingestor import Ingestor
 
 app = Flask(__name__)
 
@@ -17,34 +18,27 @@ def setup():
                    './_data/DogQuotes/DogQuotesDOCX.docx',
                    './_data/DogQuotes/DogQuotesPDF.pdf',
                    './_data/DogQuotes/DogQuotesCSV.csv']
-
-    # TODO: Use the Ingestor class to parse all files in the
-    # quote_files variable
-    quotes = None
+    quotes = []
+    for f in quote_files:
+        quotes.extend(Ingestor().parse(f))
 
     images_path = "./_data/photos/dog/"
-
-    # TODO: Use the pythons standard library os class to find all
-    # images within the images images_path directory
-    imgs = None
+    imgs = []
+    for root, _, files in os.walk(images_path):
+        imgs = [os.path.join(root, name) for name in files]
 
     return quotes, imgs
 
 
 quotes, imgs = setup()
-
+print(len(quotes))
+print(len(imgs))
 
 @app.route('/')
 def meme_rand():
     """ Generate a random meme """
-
-    # @TODO:
-    # Use the random python standard library class to:
-    # 1. select a random image from imgs array
-    # 2. select a random quote from the quotes array
-
-    img = None
-    quote = None
+    img = random.choice((imgs))
+    quote = random.choice(quotes)
     path = meme.make_meme(img, quote.body, quote.author)
     return render_template('meme.html', path=path)
 
@@ -59,14 +53,35 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
-    # @TODO:
     # 1. Use requests to save the image from the image_url
     #    form param to a temp local file.
+    # print(request)
+    img_url = request.form.get("image_url")
+    print('***'+img_url)
+    if img_url in [None, ""]:
+        img = random.choice(imgs)
+        print("Using stock image")
+    else:
+        response = requests.get(img_url)
+        img = f'./tmp/{random.randint(0,1000000)}.png'
+        fo = open(img, 'wb')
+        fo.write(response.content)
+        fo.close()
     # 2. Use the meme object to generate a meme using this temp
     #    file and the body and author form paramaters.
-    # 3. Remove the temporary saved image.
+    body = request.form.get("body")
+    author = request.form.get("author")
+    if (body in [None, ""]) or (author in [None, ""]):
+        quote = random.choice(quotes)
+        body = quote.body
+        author = quote.author
+        print("Using stock quote")
 
-    path = None
+    path = meme.make_meme(img, body, author)
+
+    # 3. Remove the temporary saved image.
+    if img_url not in [None, ""]:
+        os.remove(img)
 
     return render_template('meme.html', path=path)
 
