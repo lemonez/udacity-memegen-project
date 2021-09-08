@@ -9,6 +9,7 @@ from QuoteEngine.Ingestor import Ingestor
 app = Flask(__name__)
 
 meme = MemeEngine('./static')
+tempdir = "./tmp"
 
 
 def setup():
@@ -29,10 +30,10 @@ def setup():
 
     return quotes, imgs
 
-
 quotes, imgs = setup()
-print(len(quotes))
-print(len(imgs))
+
+if not os.path.isdir(tempdir):
+    os.mkdir(tempdir)
 
 @app.route('/')
 def meme_rand():
@@ -67,7 +68,7 @@ def meme_post():
         print("Using stock image")
     else:
         response = requests.get(img_url)
-        img = f'./tmp/{random.randint(0,1000000)}.png'
+        img = f'{tempdir}/{random.randint(0,1000000)}.png'
         fo = open(img, 'wb')
         fo.write(response.content)
         fo.close()
