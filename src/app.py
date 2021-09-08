@@ -30,10 +30,12 @@ def setup():
 
     return quotes, imgs
 
+
 quotes, imgs = setup()
 
 if not os.path.isdir(tempdir):
     os.mkdir(tempdir)
+
 
 @app.route('/')
 def meme_rand():
@@ -52,7 +54,7 @@ def meme_form():
 
 @app.route('/create', methods=['POST'])
 def meme_post():
-    """Create a user defined meme.
+    """Create a user-defined meme.
 
     If an image URL isn't specified, or if a quote or author isn't specified,
     a random stock image and/or quote is used.
@@ -68,6 +70,9 @@ def meme_post():
         print("Using stock image")
     else:
         response = requests.get(img_url)
+        # ensure valid image
+        if not is_valid_jpg(response):
+            return render_template("invalid_image.html", img_url=img_url)
         img = f'{tempdir}/{random.randint(0,1000000)}.png'
         fo = open(img, 'wb')
         fo.write(response.content)
@@ -89,6 +94,13 @@ def meme_post():
         os.remove(img)
 
     return render_template('meme.html', path=path)
+
+
+def is_valid_jpg(response):
+    """Verify that downloaded image is valid `.jpg` image."""
+    if response.content[:4] == b'\xff\xd8\xff\xe0':
+        return True
+    return False
 
 
 if __name__ == "__main__":

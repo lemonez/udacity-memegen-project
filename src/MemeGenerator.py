@@ -2,6 +2,7 @@
 
 import math
 import os
+import random
 import time
 
 from PIL import Image, ImageDraw, ImageFont
@@ -40,10 +41,27 @@ class MemeEngine:
     @staticmethod
     def add_image_quote(img, text: str, author: str) -> None:
         """Add quote to an image."""
-        message = f'"{text}" - {author}'
         draw = ImageDraw.Draw(img)
         font = ImageFont.truetype('./fonts/LilitaOne-Regular.ttf', size=20)
-        draw.text((10, 30), message, font=font, fill='purple')
+
+        if (len(text) > 20):
+            # insert newline every fifth space
+            with_newlines = ''
+            spaces = 0
+            for character in text:
+                if character == ' ':
+                    spaces += 1
+                    # will be 1 the first time, so won't prepend newline at start
+                    if spaces % 5 == 0:
+                        with_newlines += '\n'
+                    else:
+                        with_newlines += character
+                else:
+                    with_newlines += character
+            message = f'"{with_newlines}"\n  - {author}'
+        else:
+            message = f'"{text}" - {author}'
+        draw.text((random.randint(1,30), random.randint(1,50)), message, font=font, fill='purple')
 
     @staticmethod
     def create_unique_filename():
